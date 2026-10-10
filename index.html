@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mert Helva - Kasa Satış Terminali</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="ekran" role="application" aria-label="Mert Helva POS Terminali">
+
+        <!-- SOL MENÜ -->
+        <nav class="sol-menu" aria-label="Sol İşlem Menüsü">
+            <button type="button" class="sol-kutu" id="btn-ana-sayfa" title="Ana Sayfaya Dön" aria-label="Ana Sayfa">
+                <span>Ana Sayfa</span>
+            </button>
+            <button type="button" class="sol-kutu" id="btn-satis" title="Satışı Tamamla / Ödeme Al" aria-label="Satış Yap">
+                <span>Satış</span>
+            </button>
+            <button type="button" class="sol-kutu" id="btn-iptal" title="Seçili Ürünü Fişten Çıkar" aria-label="Ürün İptal">
+                <span>İptal</span>
+            </button>
+            <button type="button" class="sol-kutu" id="btn-fiyat" title="Fiyat Gör Modunu Aç" aria-label="Fiyat Gör">
+                <span>Fiyat</span>
+            </button>
+            <button type="button" class="sol-kutu" id="btn-bilet" title="Bilet ve Kupon Tanımla" aria-label="Bilet / Kupon">
+                <span>Bilet</span>
+            </button>
+            <button type="button" class="sol-kutu" id="btn-rapor" title="Gün Sonu Z-Raporunu Aç" aria-label="Raporlar">
+                <span>Rapor</span>
+            </button>
+            <button type="button" class="sol-kutu" id="btn-satici" title="Kasiyer Değiştir" aria-label="Kasiyer Değiştir">
+                <span>Satıcı</span>
+            </button>
+        </nav>
+
+        <!-- ORTA KISIM -->
+        <main class="orta">
+
+            <!-- Üst Kısım: Kasiyer Bilgisi ve Bilgi Çubuğu -->
+            <header class="ust">
+                <div class="kasiyer-bilgi-satiri">
+                    <div class="kasiyer-etiket-metin" id="kasiyer-etiket">Mert Helva | Kasiyer: <span id="aktif-kasiyer-adi">Ahmet Yılmaz (Kasa 1)</span></div>
+                    <div class="saat-durum">
+                        <span id="canli-saat">12:00:00</span>
+                        <span class="durum-nokta" title="Sunucu Bağlantısı Aktif"></span>
+                    </div>
+                </div>
+
+                <div class="bilgi-cubugu" role="region" aria-label="Giriş ve Bilgi Çubuğu">
+                    <div class="kucuk-daire" id="sepet-sayac" title="Sepetteki Toplam Kalem">0</div>
+                    <div class="giris-alani-sarmal">
+                        <input type="text" id="barkod-input" class="giris-input" placeholder="Barkod okutun veya tuşlayın..." autocomplete="off" spellcheck="false" autofocus aria-label="Barkod Giriş Alanı">
+                        <span id="adet-carpani-rozet" class="adet-rozet gizli">1x</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Sayılar ve Tuşlar Alanı (7 Sütunlu Numpad) -->
+            <section class="sayilar" aria-label="Sayısal Tuş Takımı">
+                <button type="button" class="sayi" data-tus="1">1</button>
+                <button type="button" class="sayi" data-tus="2">2</button>
+                <button type="button" class="sayi" data-tus="3">3</button>
+                <button type="button" class="sayi" data-tus="4">4</button>
+                <button type="button" class="sayi" data-tus="5">5</button>
+                <button type="button" class="sayi" data-tus="6">6</button>
+                <button type="button" class="sayi icon-tus" id="btn-sil" title="Son Karakteri Sil" aria-label="Geri Sil">⌫</button>
+
+                <button type="button" class="sayi" data-tus="7">7</button>
+                <button type="button" class="sayi" data-tus="8">8</button>
+                <button type="button" class="sayi" data-tus="9">9</button>
+                <button type="button" class="sayi" data-tus="0">0</button>
+                <button type="button" class="sayi" data-tus=".">.</button>
+                <button type="button" class="sayi" id="btn-adet-carpani" title="Adet Çarpanı Modu (Örn: 3 ★)" aria-label="Adet Çarpanı">★</button>
+                <button type="button" class="sayi icon-tus" id="btn-onay" title="Barkodu Onayla / Ekle" aria-label="Girişi Onayla">↵</button>
+            </section>
+
+            <!-- Fiyat Gör Siyah Şerit -->
+            <div class="fiyat-gor" id="fiyat-gor-bar" role="status" aria-live="polite">
+                <span class="fiyat-gor-etiket">Fiyat gör:</span>
+                <span class="fiyat-gor-metin" id="fiyat-gor-mesaj">Barkod okutulduğunda ürün bilgisi ve fiyatı burada görünür</span>
+            </div>
+
+            <!-- Ürünler Alanı: Sol Taraf Fiş Listesi, Sağ Taraf Hızlı Ürün Seçimi -->
+            <div class="urunler">
+                <!-- Aktif Fiş Tablosu -->
+                <section class="sepet-paneli" aria-label="Aktif Satış Fişi">
+                    <div class="panel-baslik">
+                        <span>Aktif Fiş Detayları</span>
+                        <span id="aktif-fis-no" class="fis-no-badge">Fiş No: Hazırlanıyor</span>
+                    </div>
+
+                    <div class="sepet-tablo-sarmal">
+                        <table class="sepet-tablosu">
+                            <thead>
+                                <tr>
+                                    <th style="width: 35px;">#</th>
+                                    <th>Ürün Adı</th>
+                                    <th style="width: 70px;">Adet</th>
+                                    <th style="width: 80px;">B. Fiyat</th>
+                                    <th style="width: 90px;">Toplam</th>
+                                    <th style="width: 45px;">İşlem</th>
+                                </tr>
+                            </thead>
+                            <tbody id="sepet-govde">
+                                <tr class="bos-sepet-mesaj">
+                                    <td colspan="6">Henüz ürün eklenmedi. Tuş takımıyla barkod girin veya sağdaki hızlı ürünlere tıklayın.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Fiş Alt Toplam Özeti -->
+                    <footer class="sepet-ozet">
+                        <div class="ozet-satir">
+                            <span>Ara Toplam:</span>
+                            <span id="ozet-ara-toplam">0.00 ₺</span>
+                        </div>
+                        <div class="ozet-satir" id="indirim-satiri" style="display: none; color: #16a34a;">
+                            <span id="indirim-etiketi">İndirim:</span>
+                            <span id="ozet-indirim">-0.00 ₺</span>
+                        </div>
+                        <div class="ozet-satir">
+                            <span>Hesaplanan KDV:</span>
+                            <span id="ozet-kdv">0.00 ₺</span>
+                        </div>
+                        <div class="ozet-satir genel-toplam-satiri">
+                            <span>GENEL TOPLAM:</span>
+                            <span id="ozet-genel-toplam">0.00 ₺</span>
+                        </div>
+                    </footer>
+                </section>
+
+                <!-- Hızlı Ürün Kataloğu -->
+                <section class="hizli-urunler-paneli" aria-label="Hızlı Ürün Kataloğu">
+                    <div class="kategori-bar" id="kategori-filtreleri" role="tablist">
+                        <button type="button" class="kategori-btn aktif" data-kategori="hepsi">Tüm Ürünler</button>
+                        <button type="button" class="kategori-btn" data-kategori="Tahin Helvaları">Tahin Helvaları</button>
+                        <button type="button" class="kategori-btn" data-kategori="Tahin & Pekmez">Tahin & Pekmez</button>
+                        <button type="button" class="kategori-btn" data-kategori="Lokum & Şekerleme">Lokum & Şekerleme</button>
+                        <button type="button" class="kategori-btn" data-kategori="Reçel & Bal">Reçel & Bal</button>
+                    </div>
+
+                    <div class="hizli-urunler-grid" id="urun-grid">
+                        <div class="yukleniyor-mesaj">Ürünler yükleniyor...</div>
+                    </div>
+                </section>
+            </div>
+
+        </main>
+
+        <!-- SAĞ MENÜ -->
+        <aside class="sag-menu" aria-label="Sağ İşlem Menüsü">
+            <button type="button" class="sag-kutu" id="btn-indirim" title="Sepete İndirim Uygula" aria-label="İndirim Yap">
+                <span>İndirim</span>
+            </button>
+            <button type="button" class="sag-kutu" id="btn-artir" title="Seçili Ürünün Adedini 1 Artır" aria-label="Miktar Artır">
+                <span>Artır</span>
+            </button>
+            <button type="button" class="sag-kutu" id="btn-fis-iptal" title="Tüm Fişi İptal Et ve Sıfırla" aria-label="Fiş İptal Et">
+                <span>Fiş İptal</span>
+            </button>
+            <button type="button" class="sag-kutu" id="btn-gider-pusula" title="Kasadan Gider / Masraf Kaydı Yap" aria-label="Gider Pusulası">
+                <span>Gider Pusula</span>
+            </button>
+            <button type="button" class="sag-kutu sag-kutu-odeme" id="btn-hizli-odeme" title="Hızlı Nakit veya Kredi Kartı Ödemesi" aria-label="Ödeme Al">
+                <span>Ödeme Al</span>
+            </button>
+        </aside>
+
+    </div>
+
+    <!-- ===================== MODAL PENCERELERİ ===================== -->
+
+    <!-- 1. Ödeme / Satış Tamamlama Modalı -->
+    <div class="modal-arkaplan gizli" id="modal-odeme" role="dialog" aria-modal="true" aria-labelledby="odeme-baslik">
+        <div class="modal-kutu">
+            <div class="modal-ust">
+                <h3 id="odeme-baslik">Satış ve Ödeme Al</h3>
+                <button type="button" class="modal-kapat" data-kapat="modal-odeme">✖</button>
+            </div>
+            <div class="modal-icerik">
+                <div class="odeme-tutar-karti">
+                    <span class="odeme-tutar-etiket">Ödenecek Tutar</span>
+                    <span class="odeme-tutar-deger" id="modal-odeme-tutar">0.00 ₺</span>
+                </div>
+
+                <div class="odeme-tipi-secim">
+                    <button type="button" class="odeme-tipi-btn aktif" data-odeme="Nakit">Nakit</button>
+                    <button type="button" class="odeme-tipi-btn" data-odeme="Kredi Kartı">Kredi Kartı</button>
+                </div>
+
+                <div class="nakit-hesaplama-alani" id="nakit-alani">
+                    <label for="alinan-para-input">Müşteriden Alınan Tutar:</label>
+                    <div class="input-prefix-sarmal">
+                        <input type="number" id="alinan-para-input" class="modal-input" placeholder="0.00" step="0.5" min="0">
+                        <span>₺</span>
+                    </div>
+
+                    <div class="hizli-para-butonlari">
+                        <button type="button" class="para-btn" data-tutar="tam">Tam Tutar</button>
+                        <button type="button" class="para-btn" data-tutar="50">50 ₺</button>
+                        <button type="button" class="para-btn" data-tutar="100">100 ₺</button>
+                        <button type="button" class="para-btn" data-tutar="200">200 ₺</button>
+                    </div>
+
+                    <div class="para-ustu-kutusu">
+                        <span>Para Üstü:</span>
+                        <strong id="para-ustu-deger">0.00 ₺</strong>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-alt">
+                <button type="button" class="btn-ikincil" data-kapat="modal-odeme">Vazgeç</button>
+                <button type="button" class="btn-birincil" id="btn-satisi-onayla">Satışı Tamamla & Fiş Kes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Termal Fiş Önizleme Modalı -->
+    <div class="modal-arkaplan gizli" id="modal-termal-fis" role="dialog" aria-modal="true" aria-labelledby="fis-baslik">
+        <div class="modal-kutu termal-fis-kutu">
+            <div class="modal-ust">
+                <h3 id="fis-baslik">Satış Fişi</h3>
+                <button type="button" class="modal-kapat" data-kapat="modal-termal-fis">✖</button>
+            </div>
+            <div class="modal-icerik">
+                <div class="termal-fis-kagit" id="termal-fis-cikti"></div>
+            </div>
+            <div class="modal-alt">
+                <button type="button" class="btn-ikincil" data-kapat="modal-termal-fis">Kapat</button>
+                <button type="button" class="btn-birincil" id="btn-yazdir-fis">Fişi Yazdır</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Gün Sonu / Z-Raporu Modalı -->
+    <div class="modal-arkaplan gizli" id="modal-rapor" role="dialog" aria-modal="true" aria-labelledby="rapor-baslik">
+        <div class="modal-kutu genis-modal">
+            <div class="modal-ust">
+                <h3 id="rapor-baslik">Gün Sonu Z-Raporu</h3>
+                <button type="button" class="modal-kapat" data-kapat="modal-rapor">✖</button>
+            </div>
+            <div class="modal-icerik" id="rapor-icerik">
+                <div class="yukleniyor-mesaj">Rapor verileri hesaplanıyor...</div>
+            </div>
+            <div class="modal-alt">
+                <button type="button" class="btn-ikincil" data-kapat="modal-rapor">Kapat</button>
+                <button type="button" class="btn-birincil" id="btn-yazdir-rapor">Raporu Yazdır</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. İndirim Modalı -->
+    <div class="modal-arkaplan gizli" id="modal-indirim" role="dialog" aria-modal="true" aria-labelledby="indirim-baslik">
+        <div class="modal-kutu">
+            <div class="modal-ust">
+                <h3 id="indirim-baslik">İndirim Uygula</h3>
+                <button type="button" class="modal-kapat" data-kapat="modal-indirim">✖</button>
+            </div>
+            <div class="modal-icerik">
+                <p class="modal-aciklama">Sepetteki toplam tutara uygulanacak indirim türünü ve değerini seçin:</p>
+                <div class="indirim-turu-secim">
+                    <button type="button" class="indirim-tur-btn aktif" data-tur="yuzde">% Yüzde İndirimi</button>
+                    <button type="button" class="indirim-tur-btn" data-tur="tutar">₺ Tutar İndirimi</button>
+                </div>
+                <div class="input-sarmal">
+                    <label for="indirim-degeri-input">İndirim Miktarı:</label>
+                    <input type="number" id="indirim-degeri-input" class="modal-input" placeholder="Örn: 10" min="1" step="1">
+                </div>
+                <div class="hizli-indirim-butonlari">
+                    <button type="button" class="hizli-ind-btn" data-val="5">%5</button>
+                    <button type="button" class="hizli-ind-btn" data-val="10">%10</button>
+                    <button type="button" class="hizli-ind-btn" data-val="15">%15</button>
+                    <button type="button" class="hizli-ind-btn" data-val="20">%20</button>
+                </div>
+            </div>
+            <div class="modal-alt">
+                <button type="button" class="btn-ikincil" data-kapat="modal-indirim">Vazgeç</button>
+                <button type="button" class="btn-birincil" id="btn-uygula-indirim">İndirimi Uygula</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. Bilet / Kupon Modalı -->
+    <div class="modal-arkaplan gizli" id="modal-bilet" role="dialog" aria-modal="true" aria-labelledby="bilet-baslik">
+        <div class="modal-kutu">
+            <div class="modal-ust">
+                <h3 id="bilet-baslik">Promosyon Bileti & Kupon</h3>
+                <button type="button" class="modal-kapat" data-kapat="modal-bilet">✖</button>
+            </div>
+            <div class="modal-icerik">
+                <p class="modal-aciklama">Mert Helva indirim kuponu veya promosyon bilet kodunu girin:</p>
+                <input type="text" id="kupon-kodu-input" class="modal-input buyuk-input" placeholder="Örn: MERTHELVA10, TAHIN15, LEZZET20" autocomplete="off">
+                <div class="kupon-ipucu">
+                    <span>Kampanya Kodları:</span>
+                    <code>MERTHELVA10</code>, <code>TAHIN15</code>, <code>LEZZET20</code>, <code>HEDIYE50</code>
+                </div>
+            </div>
+            <div class="modal-alt">
+                <button type="button" class="btn-ikincil" data-kapat="modal-bilet">Vazgeç</button>
+                <button type="button" class="btn-birincil" id="btn-onayla-bilet">Kuponu Doğrula & Uygula</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. Kasiyer / Satıcı Seçim Modalı -->
+    <div class="modal-arkaplan gizli" id="modal-satici" role="dialog" aria-modal="true" aria-labelledby="satici-baslik">
+        <div class="modal-kutu">
+            <div class="modal-ust">
+                <h3 id="satici-baslik">Kasiyer Seçimi / Oturum</h3>
+                <button type="button" class="modal-kapat" data-kapat="modal-satici">✖</button>
+            </div>
+            <div class="modal-icerik">
+                <p class="modal-aciklama">Aktif işlem yapacak kasiyeri seçiniz:</p>
+                <div class="kasiyer-listesi" id="kasiyer-secim-listesi"></div>
+            </div>
+            <div class="modal-alt">
+                <button type="button" class="btn-ikincil" data-kapat="modal-satici">Kapat</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 7. Gider Pusulası Modalı -->
+    <div class="modal-arkaplan gizli" id="modal-gider" role="dialog" aria-modal="true" aria-labelledby="gider-baslik">
+        <div class="modal-kutu">
+            <div class="modal-ust">
+                <h3 id="gider-baslik">Kasadan Gider Pusulası Düzenle</h3>
+                <button type="button" class="modal-kapat" data-kapat="modal-gider">✖</button>
+            </div>
+            <div class="modal-icerik">
+                <div class="input-sarmal">
+                    <label for="gider-kategori-select">Gider Kategorisi:</label>
+                    <select id="gider-kategori-select" class="modal-input">
+                        <option value="Kargo & Kurye">Kargo & Kurye</option>
+                        <option value="Mağaza Temizlik & Sarf">Mağaza Temizlik & Sarf</option>
+                        <option value="Personel Yemek & Avans">Personel Yemek & Avans</option>
+                        <option value="Tadilat & Bakım">Tadilat & Bakım</option>
+                        <option value="Diğer Masraflar">Diğer Masraflar</option>
+                    </select>
+                </div>
+                <div class="input-sarmal">
+                    <label for="gider-tutar-input">Tutar (₺):</label>
+                    <input type="number" id="gider-tutar-input" class="modal-input" placeholder="0.00" min="1" step="0.5">
+                </div>
+                <div class="input-sarmal">
+                    <label for="gider-aciklama-input">Açıklama / Belge No:</label>
+                    <input type="text" id="gider-aciklama-input" class="modal-input" placeholder="Örn: Aras Kargo kurye bedeli">
+                </div>
+            </div>
+            <div class="modal-alt">
+                <button type="button" class="btn-ikincil" data-kapat="modal-gider">Vazgeç</button>
+                <button type="button" class="btn-birincil btn-tehlike" id="btn-kaydet-gider">Gideri Kaydet</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bildirim (Toast) Kutusu -->
+    <div class="toast-kutusu" id="toast-mesaj" role="alert" aria-live="assertive"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>

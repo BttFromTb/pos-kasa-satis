@@ -1,0 +1,20 @@
+{
+  "name": "pos-kasa-satis-ekrani",
+  "version": "1.0.0",
+  "description": "Market ve Mağaza POS Kasa Satış Terminali - Full Stack Uygulama",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": ["pos", "kasa", "satis", "express", "javascript"],
+  "author": "Full-Stack Developer",
+  "license": "ISC",
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
+  }
+}

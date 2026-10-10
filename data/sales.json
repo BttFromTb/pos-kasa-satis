@@ -1,0 +1,35 @@
+[
+  {
+    "id": "FIS-1001",
+    "date": "2026-10-10T10:15:00.000Z",
+    "cashier": "Kasiyer 1 (Ahmet Yılmaz)",
+    "paymentMethod": "Nakit",
+    "items": [
+      {
+        "id": 1,
+        "barcode": "8690504111001",
+        "name": "Ekmek (200 gr)",
+        "price": 10.00,
+        "quantity": 2,
+        "total": 20.00,
+        "vat": 1
+      },
+      {
+        "id": 2,
+        "barcode": "8690504111002",
+        "name": "Tam Yağlı Süt 1L",
+        "price": 34.50,
+        "quantity": 1,
+        "total": 34.50,
+        "vat": 1
+      }
+    ],
+    "subtotal": 54.50,
+    "discount": 0.00,
+    "discountCode": null,
+    "vatTotal": 0.54,
+    "grandTotal": 54.50,
+    "paidAmount": 100.00,
+    "change": 45.50
+  }
+]

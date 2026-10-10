@@ -1,0 +1,10 @@
+[
+  {
+    "id": "GDP-5001",
+    "date": "2026-10-10T09:30:00.000Z",
+    "cashier": "Kasiyer 1 (Ahmet Yılmaz)",
+    "category": "Kargo & Kurye",
+    "description": "Acil evrak kargo bedeli",
+    "amount": 75.00
+  }
+]

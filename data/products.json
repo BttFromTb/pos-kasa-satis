@@ -1,0 +1,122 @@
+[
+  {
+    "id": 1,
+    "barcode": "8690504111001",
+    "name": "Ekmek (200 gr)",
+    "category": "Unlu Mamüller",
+    "price": 10.00,
+    "vat": 1,
+    "stock": 150,
+    "icon": "🥖"
+  },
+  {
+    "id": 2,
+    "barcode": "8690504111002",
+    "name": "Tam Yağlı Süt 1L",
+    "category": "Süt & Kahvaltılık",
+    "price": 34.50,
+    "vat": 1,
+    "stock": 80,
+    "icon": "🥛"
+  },
+  {
+    "id": 3,
+    "barcode": "8690504111003",
+    "name": "Doğal Kaynak Suyu 0.5L",
+    "category": "İçecek",
+    "price": 7.50,
+    "vat": 10,
+    "stock": 240,
+    "icon": "💧"
+  },
+  {
+    "id": 4,
+    "barcode": "8690504111004",
+    "name": "Siyah Çay 1000 gr",
+    "category": "İçecek",
+    "price": 165.00,
+    "vat": 1,
+    "stock": 45,
+    "icon": "🫖"
+  },
+  {
+    "id": 5,
+    "barcode": "8690504111005",
+    "name": "Filtre Kahve 250 gr",
+    "category": "İçecek",
+    "price": 120.00,
+    "vat": 10,
+    "stock": 30,
+    "icon": "☕"
+  },
+  {
+    "id": 6,
+    "barcode": "8690504111006",
+    "name": "Sütlü Çikolata 70 gr",
+    "category": "Atıştırmalık",
+    "price": 28.00,
+    "vat": 10,
+    "stock": 110,
+    "icon": "🍫"
+  },
+  {
+    "id": 7,
+    "barcode": "8690504111007",
+    "name": "Kakaolu Bisküvi",
+    "category": "Atıştırmalık",
+    "price": 18.50,
+    "vat": 10,
+    "stock": 95,
+    "icon": "🍪"
+  },
+  {
+    "id": 8,
+    "barcode": "8690504111008",
+    "name": "Sarı Mercimek 1 kg",
+    "category": "Bakliyat",
+    "price": 46.00,
+    "vat": 1,
+    "stock": 60,
+    "icon": "🥣"
+  },
+  {
+    "id": 9,
+    "barcode": "8690504111009",
+    "name": "Baldo Pirinç 1 kg",
+    "category": "Bakliyat",
+    "price": 68.00,
+    "vat": 1,
+    "stock": 75,
+    "icon": "🍚"
+  },
+  {
+    "id": 10,
+    "barcode": "8690504111010",
+    "name": "Ayçiçek Yağı 1L",
+    "category": "Temel Gıda",
+    "price": 74.50,
+    "vat": 1,
+    "stock": 50,
+    "icon": "🌻"
+  },
+  {
+    "id": 11,
+    "barcode": "8690504111011",
+    "name": "Beyaz Peynir 500 gr",
+    "category": "Süt & Kahvaltılık",
+    "price": 145.00,
+    "vat": 1,
+    "stock": 35,
+    "icon": "🧀"
+  },
+  {
+    "id": 12,
+    "barcode": "8690504111012",
+    "name": "Yumurtalık (10'lu)",
+    "category": "Süt & Kahvaltılık",
+    "price": 48.00,
+    "vat": 1,
+    "stock": 40,
+    "icon": "🥚"
+  }
+]
