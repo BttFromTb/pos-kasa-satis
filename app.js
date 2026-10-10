@@ -16,6 +16,17 @@ const state = {
     currentReceiptData: null
 };
 
+// ===================== MOBİL VE SES DESTEĞİ ===================== //
+function isMobileDevice() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+}
+
+function focusInputSafely() {
+    if (!isMobileDevice() && elements && elements.barkodInput) {
+        elements.barkodInput.focus();
+    }
+}
+
 // ===================== DOĞAL PARA BİRİMİ BİÇİMLENDİRME ===================== //
 function formatTL(num) {
     return Number(num || 0).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' TL';
@@ -408,13 +419,13 @@ function renderCart() {
 function handleNumpadKey(key) {
     playKeyClick();
     elements.barkodInput.value += key;
-    elements.barkodInput.focus();
+    focusInputSafely();
 }
 
 function handleBackspace() {
     playKeyClick();
     elements.barkodInput.value = elements.barkodInput.value.slice(0, -1);
-    elements.barkodInput.focus();
+    focusInputSafely();
 }
 
 function setMultiplier(val) {
@@ -438,7 +449,7 @@ function handleMultiplierKey() {
         setMultiplier(state.multiplier > 1 ? 1 : 2);
         showToast(`Adet çarpanı: ${state.multiplier}x`, 'bilgi');
     }
-    elements.barkodInput.focus();
+    focusInputSafely();
 }
 
 async function handleBarcodeSubmit() {
@@ -953,5 +964,5 @@ document.addEventListener('DOMContentLoaded', () => {
     startClock();
     loadProducts();
     renderCart();
-    elements.barkodInput.focus();
+    focusInputSafely();
 });

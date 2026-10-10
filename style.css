@@ -1159,39 +1159,101 @@ button {
     background: #15803d;
 }
 
-/* Küçük Ekran / Tablet Uyumluluğu */
+/* Mobil & Tablet Tam Uyumlu Responsive Yapılandırma */
 @media (max-width: 900px) {
+    html, body {
+        height: auto;
+        min-height: 100vh;
+        min-height: 100dvh;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
     .ekran {
         flex-direction: column;
         height: auto;
+        min-height: 100vh;
+        min-height: 100dvh;
+        overflow-x: hidden;
         overflow-y: auto;
     }
+
     .sol-menu {
         width: 100%;
         height: auto;
         flex-direction: row;
         overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        border-right: none;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.2);
     }
+
     .sol-kutu {
-        width: 90px;
-        height: 55px;
+        width: 85px;
+        height: 50px;
         flex-shrink: 0;
         border-right: 1px solid rgba(255, 255, 255, 0.08);
         border-bottom: none;
-        font-size: 12px;
+        font-size: 11px;
+        touch-action: manipulation;
     }
+
     .sag-menu {
         width: 100%;
         flex-direction: row;
         overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        border-left: none;
+        border-top: 1px solid rgba(0, 0, 0, 0.2);
     }
+
     .sag-kutu {
-        flex: 1;
-        height: 60px;
-        font-size: 13px;
+        min-width: 90px;
+        height: 52px;
+        font-size: 11px;
+        touch-action: manipulation;
     }
+
+    .ana-panel {
+        height: auto;
+        overflow: visible;
+    }
+
     .urunler {
         flex-direction: column;
-        height: 520px;
+        height: auto;
+        max-height: none;
+    }
+
+    .sepet-alani {
+        height: 280px;
+        border-right: none;
+        border-bottom: 2px solid #cbd5e1;
+    }
+
+    .urun-katalog-alani {
+        height: auto;
+        min-height: 350px;
+    }
+
+    .urun-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 8px;
+        padding: 8px;
+    }
+
+    .numpad-grid {
+        gap: 6px;
+    }
+
+    .tus, .sayi, .fn-tus {
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .modal-icerik {
+        width: 92%;
+        max-width: 450px;
+        padding: 16px;
     }
 }
