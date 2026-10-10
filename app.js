@@ -264,7 +264,7 @@ function addProductToCart(product, customQuantity = null) {
     // Çarpanı varsayılana getir
     setMultiplier(1);
     elements.barkodInput.value = '';
-    elements.barkodInput.focus();
+    focusInputSafely();
 
     showPriceCheck(product);
     renderCart();
